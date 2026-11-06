@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>생성형 AI와 학습이론의 교차 | Interactive Infographic</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:linear-gradient(135deg,#0a1628 0%,#1a2744 50%,#0d2137 100%);color:#e8edf3;min-height:100vh;overflow-x:hidden}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+h1{text-align:center;font-size:1.8rem;margin:30px 0 8px;background:linear-gradient(90deg,#60a5fa,#a78bfa,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;font-size:0.95rem;color:#94a3b8;margin-bottom:30px}
+.meta{text-align:center;font-size:0.8rem;color:#64748b;margin-bottom:40px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
+.stat-card{background:rgba(30,58,95,0.6);border:1px solid rgba(96,165,250,0.2);border-radius:16px;padding:24px 16px;text-align:center;transition:transform 0.3s,box-shadow 0.3s}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(96,165,250,0.15)}
+.stat-num{font-size:2.4rem;font-weight:800;background:linear-gradient(135deg,#60a5fa,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:0.82rem;color:#94a3b8;margin-top:6px;line-height:1.4}
+.section-title{font-size:1.3rem;font-weight:700;margin:40px 0 20px;padding-left:16px;border-left:4px solid #60a5fa}
+.theory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:40px}
+.theory-card{background:rgba(30,58,95,0.5);border-radius:16px;padding:24px;border:1px solid rgba(255,255,255,0.08);cursor:pointer;transition:all 0.3s}
+.theory-card:hover{border-color:var(--accent);box-shadow:0 0 20px var(--glow)}
+.theory-card.constructivism{--accent:#34d399;--glow:rgba(52,211,153,0.15)}
+.theory-card.cognitivism{--accent:#60a5fa;--glow:rgba(96,165,250,0.15)}
+.theory-card.connectivism{--accent:#a78bfa;--glow:rgba(167,139,250,0.15)}
+.theory-card.humanism{--accent:#f59e0b;--glow:rgba(245,158,11,0.15)}
+.theory-card.behaviorism{--accent:#ef4444;--glow:rgba(239,68,68,0.15)}
+.theory-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.theory-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+.theory-card.constructivism .theory-icon{background:rgba(52,211,153,0.15);color:#34d399}
+.theory-card.cognitivism .theory-icon{background:rgba(96,165,250,0.15);color:#60a5fa}
+.theory-card.connectivism .theory-icon{background:rgba(167,139,250,0.15);color:#a78bfa}
+.theory-card.humanism .theory-icon{background:rgba(245,158,11,0.15);color:#f59e0b}
+.theory-card.behaviorism .theory-icon{background:rgba(239,68,68,0.15);color:#ef4444}
+.theory-name{font-size:1.1rem;font-weight:700}
+.theory-count{font-size:0.8rem;color:#94a3b8}
+.theory-desc{font-size:0.88rem;color:#cbd5e1;line-height:1.6;margin-bottom:12px}
+.theory-bar{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-top:8px}
+.theory-bar-fill{height:100%;border-radius:4px;transition:width 1.5s ease}
+.theory-card.constructivism .theory-bar-fill{background:linear-gradient(90deg,#34d399,#059669);width:100%}
+.theory-card.cognitivism .theory-bar-fill{background:linear-gradient(90deg,#60a5fa,#2563eb);width:62%}
+.theory-card.connectivism .theory-bar-fill{background:linear-gradient(90deg,#a78bfa,#7c3aed);width:48%}
+.theory-card.humanism .theory-bar-fill{background:linear-gradient(90deg,#f59e0b,#d97706);width:33%}
+.theory-card.behaviorism .theory-bar-fill{background:linear-gradient(90deg,#ef4444,#dc2626);width:10%}
+.edu-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
+.level-card{background:rgba(30,58,95,0.5);border-radius:16px;padding:24px;text-align:center;border:1px solid rgba(255,255,255,0.08);position:relative;overflow:hidden}
+.level-pct{font-size:3rem;font-weight:800;line-height:1}
+.level-label{font-size:1rem;font-weight:600;margin:8px 0 4px}
+.level-detail{font-size:0.8rem;color:#94a3b8}
+.level-card:nth-child(1) .level-pct{color:#60a5fa}
+.level-card:nth-child(2) .level-pct{color:#a78bfa}
+.level-card:nth-child(3) .level-pct{color:#f59e0b}
+.donut-container{display:flex;justify-content:center;align-items:center;gap:40px;margin:30px 0;flex-wrap:wrap}
+.donut-wrap{text-align:center}
+.donut{width:160px;height:160px;position:relative}
+.donut svg{transform:rotate(-90deg)}
+.donut-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.6rem;font-weight:800}
+.donut-title{margin-top:8px;font-size:0.85rem;color:#94a3b8}
+.key-finding{background:linear-gradient(135deg,rgba(96,165,250,0.1),rgba(167,139,250,0.1));border:1px solid rgba(96,165,250,0.2);border-radius:16px;padding:28px;margin:20px 0;position:relative}
+.key-finding::before{content:'\26A0';position:absolute;top:-12px;left:20px;background:#1a2744;padding:0 8px;font-size:1.2rem}
+.key-finding h3{color:#60a5fa;font-size:1rem;margin-bottom:10px}
+.key-finding p{font-size:0.9rem;line-height:1.7;color:#cbd5e1}
+.footer{text-align:center;padding:40px 0 20px;font-size:0.75rem;color:#475569;border-top:1px solid rgba(255,255,255,0.05);margin-top:40px}
+@media(max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr)}.edu-levels{grid-template-columns:1fr}.theory-grid{grid-template-columns:1fr}h1{font-size:1.4rem}.stat-num{font-size:1.8rem}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>생성형 AI와 학습이론의 교차</h1>
+<p class="subtitle">Pedagogical Practices and Generative AI Integration<br>Across the Spectrum of Learning Theories</p>
+<p class="meta">Saranya & Saravanan (2026) | Frontiers in Education | DOI: 10.3389/feduc.2026.1947867</p>
+
+<div class="stats-row">
+<div class="stat-card"><div class="stat-num">614</div><div class="stat-label">분석 논문 수<br>(Bibliometric)</div></div>
+<div class="stat-card"><div class="stat-num">163</div><div class="stat-label">내용분석<br>대상 논문</div></div>
+<div class="stat-card"><div class="stat-num">159%</div><div class="stat-label">연간<br>성장률</div></div>
+<div class="stat-card"><div class="stat-num">333</div><div class="stat-label">학술지<br>출처 수</div></div>
+</div>
+
+<div class="section-title">교육 수준별 연구 분포</div>
+<div class="edu-levels">
+<div class="level-card"><div class="level-pct">57%</div><div class="level-label">고등교육</div><div class="level-detail">93편 | 수용, 학업성과, 언어학습, 챗봇, 윤리</div></div>
+<div class="level-card"><div class="level-pct">37%</div><div class="level-label">전문직</div><div class="level-detail">60편 | 교사 전문성, 언어교육, 정책, 디자인</div></div>
+<div class="level-card"><div class="level-pct">6%</div><div class="level-label">K-12 학교</div><div class="level-detail">10편 | 수업계획, 평가, 음악, 수학</div></div>
+</div>
+
+<div class="section-title">학습이론별 생성형 AI 정렬</div>
+<div class="theory-grid">
+<div class="theory-card constructivism" onclick="this.classList.toggle('expanded')">
+<div class="theory-header"><div class="theory-icon">🏗️</div><div><div class="theory-name">구성주의 Constructivism</div><div class="theory-count">21편 | 가장 강한 정렬</div></div></div>
+<div class="theory-desc">학습자가 GenAI를 인지적 비계(scaffold)로 활용하여 능동적으로 지식을 구성. 자기주도학습, 경험 기반 탐구, 비판적 질문 정교화가 핵심 메커니즘.</div>
+<div class="theory-bar"><div class="theory-bar-fill"></div></div>
+</div>
+<div class="theory-card cognitivism">
+<div class="theory-header"><div class="theory-icon">🧠</div><div><div class="theory-name">인지주의 Cognitivism</div><div class="theory-count">13편 | 실증 연구 풍부</div></div></div>
+<div class="theory-desc">AI 챗봇 실험과 준실험 설계를 통해 정보처리, 문제해결, 개념적 이해 향상을 실증. 학습 성과 측정에 가장 적합한 이론적 프레임.</div>
+<div class="theory-bar"><div class="theory-bar-fill"></div></div>
+</div>
+<div class="theory-card connectivism">
+<div class="theory-header"><div class="theory-icon">🌐</div><div><div class="theory-name">연결주의 Connectivism</div><div class="theory-count">10편 | 네트워크 학습</div></div></div>
+<div class="theory-desc">동료협력과 디지털 학습 네트워크를 통한 지식 공동구성. GenAI가 전통적 동료 상호작용을 보완하며 새로운 학습 생태계 형성.</div>
+<div class="theory-bar"><div class="theory-bar-fill"></div></div>
+</div>
+<div class="theory-card humanism">
+<div class="theory-header"><div class="theory-icon">💛</div><div><div class="theory-name">인본주의 Humanism</div><div class="theory-count">7편 | 윤리적 프레임</div></div></div>
+<div class="theory-desc">AI 리터러시, 학문적 진정성, 책임감 있는 사용에 초점. 학습자 주체성과 윤리적 의식 개발이 핵심.</div>
+<div class="theory-bar"><div class="theory-bar-fill"></div></div>
+</div>
+<div class="theory-card behaviorism">
+<div class="theory-header"><div class="theory-icon">🔔</div><div><div class="theory-name">행동주의 Behaviorism</div><div class="theory-count">2편 | 최소 연결</div></div></div>
+<div class="theory-desc">적응형 학습 플랫폼의 보상·배지 체계를 통한 외부 강화. GenAI 교육에서 가장 낮은 이론적 관련성.</div>
+<div class="theory-bar"><div class="theory-bar-fill"></div></div>
+</div>
+</div>
+
+<div class="key-finding">
+<h3>핵심 발견: 기술 수용 ≠ 교육 효과</h3>
+<p>"단순히 생성형 AI 도구를 교수법에 도입하는 것만으로는 학습자의 비판적·고차원 사고에 영향을 미치지 않을 수 있다." 교육적 가치는 GenAI를 '사용하느냐'가 아니라, 교수자가 GenAI를 '어떻게 학습 경험 속에 설계하느냐'에 달려 있다. TAM/UTAUT 기반의 수용 연구는 도입 의도만 측정할 뿐, 실질적 학습 전환을 보장하지 않는다.</p>
+</div>
+
+<div class="section-title">주제별 연구 분포 (163편)</div>
+<div class="donut-container">
+<div class="donut-wrap">
+<div class="donut"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#60a5fa" stroke-width="3" stroke-dasharray="74.2 25.8" stroke-linecap="round"/></svg><div class="donut-label" style="color:#60a5fa">121</div></div>
+<div class="donut-title">GenAI 수용 &<br>학업환경</div>
+</div>
+<div class="donut-wrap">
+<div class="donut"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#a78bfa" stroke-width="3" stroke-dasharray="19.6 80.4" stroke-linecap="round"/></svg><div class="donut-label" style="color:#a78bfa">32</div></div>
+<div class="donut-title">GenAI<br>언어학습</div>
+</div>
+<div class="donut-wrap">
+<div class="donut"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="6.1 93.9" stroke-linecap="round"/></svg><div class="donut-label" style="color:#f59e0b">10</div></div>
+<div class="donut-title">정책 &<br>윤리적 사용</div>
+</div>
+</div>
+
+<div class="footer">
+<p>Donghun Chung | 광운대학교 미디어커뮤니케이션학부</p>
+<p>Data: Saranya & Saravanan (2026), Frontiers in Education 11:1947867</p>
+</div>
+</div>
+</body>
+</html>
